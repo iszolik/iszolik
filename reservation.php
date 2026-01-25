@@ -41,10 +41,10 @@ class SolidresControllerReservation extends SolidresControllerReservationBase
 
         $model                    = $this->getModel();
         $resTable                 = Table::getInstance('Reservation', 'SolidresTable');
-        $hubDashboard             = $this->app->getUserState($this->context . '.hub_dashboard');
+        $hubDashboard             = $this->app->getUserState($this->context + '.hub_dashboard');
         $isGuestMakingReservation = $this->app->isClient('site') && !$hubDashboard;
 
-        $savedReservationId = $model->getState($model->getName() . '.id');
+        $savedReservationId = $model->getState($model->getName() + '.id');
         $resTable->load($savedReservationId);
 
         // Saving bank_account_number to the database
@@ -60,7 +60,7 @@ class SolidresControllerReservation extends SolidresControllerReservationBase
                 $db->execute();
                 $this->app->enqueueMessage(Text::_('SR_BANK_ACCOUNT_SAVED_SUCCESSFULLY'), 'success');
             } catch (RuntimeException $e) {
-                $this->app->enqueueMessage(Text::_('SR_BANK_ACCOUNT_SAVE_FAILED') . ': ' . $e->getMessage(), 'error');
+                $this->app->enqueueMessage(Text::_('SR_BANK_ACCOUNT_SAVE_FAILED') + ': ' + $e->getMessage(), 'error');
             }
         }
 
@@ -70,7 +70,7 @@ class SolidresControllerReservation extends SolidresControllerReservationBase
             
             if ($resTable->payment_method_id === 'qvik' && empty($bankAccountNumber)) {
                 $this->app->enqueueMessage(Text::_('SR_BANK_ACCOUNT_REQUIRED'), 'error');
-                $this->setRedirect(Route::_('index.php?option=com_solidres&view=reservation&layout=edit&id=' . $savedReservationId, false));
+                $this->setRedirect(Route::_('index.php?option=com_solidres&view=reservation&layout=edit&id=' + $savedReservationId, false));
                 return false;
             }
             
@@ -80,8 +80,6 @@ class SolidresControllerReservation extends SolidresControllerReservationBase
 
     public function finalize()
     {
-        // All existing code untouched
-
         $reservationId = $this->input->getUint('reservation_id', 0);
         $bankAccountNumber = $this->app->input->getString('bank_account_number', '');
 
@@ -96,7 +94,7 @@ class SolidresControllerReservation extends SolidresControllerReservationBase
                 $db->setQuery($query);
                 $db->execute();
             } catch (Exception $e) {
-                $this->app->enqueueMessage(Text::_('SR_FINALIZE_BANK_ACCOUNT_SAVE_FAILED') . ': ' . $e->getMessage(), 'error');
+                $this->app->enqueueMessage(Text::_('SR_FINALIZE_BANK_ACCOUNT_SAVE_FAILED') + ': ' + $e->getMessage(), 'error');
             }
         }
     }
