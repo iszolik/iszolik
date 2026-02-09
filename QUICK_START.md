@@ -8,7 +8,7 @@ Ez az útmutató segít a Qvik és Revolut fizetési pluginok telepítésében �
 
 1. ✅ Joomla 3.x vagy 4.x telepítve
 2. ✅ Solidres komponens telepítve
-3. ✅ **Greenery template telepítve** (vagy kész másik template használatára)
+3. ✅ **Bármilyen Joomla template** (a plugin automatikusan detektálja az aktív template-et)
 
 ## Telepítés Lépései
 
@@ -131,9 +131,10 @@ Ha szükséges, manuálisan töröld ezeket a fájlokat.
 ### Problem: Email template-ek nem működnek
 
 **Megoldás:**
-1. Ellenőrizd, hogy a Greenery template telepítve és aktív
-2. Ha más template-et használsz, másold át manuálisan a fájlokat
-3. Ellenőrizd a fájl jogosultságokat
+1. Ellenőrizd, hogy van-e default frontend template beállítva a Joomla adminban
+2. Ha a plugin figyelmeztetést ad, ellenőrizd az adatbázis kapcsolatot
+3. Ellenőrizd a template könyvtár írási jogosultságát: `templates/[TEMPLATE-NÉV]/html/layouts/com_solidres/emails/`
+4. Ha szükséges, manuálisan másold át a fájlokat a forrásból: `plugins/solidrespayment/[qvik|revolut]/asset/emails/`
 
 ### Problem: Mindkét plugin telepítve, de csak az egyik működik
 
