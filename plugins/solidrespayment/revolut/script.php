@@ -167,6 +167,31 @@ class PlgSolidrespaymentRevolutInstallerScript
     }
 
     /**
+     * Get the default template name from Joomla
+     *
+     * @return  string  The default template name, 'greenery' as fallback
+     */
+    private function getDefaultTemplate()
+    {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select($db->quoteName('template'))
+              ->from($db->quoteName('#__template_styles'))
+              ->where($db->quoteName('client_id') . ' = 0')  // 0 = frontend (site)
+              ->where($db->quoteName('home') . ' = 1');      // default template
+        
+        $db->setQuery($query);
+        
+        try {
+            $template = $db->loadResult();
+            return $template ?: 'greenery'; // Fallback ha nem található
+        } catch (\Exception $e) {
+            return 'greenery'; // Fallback hiba esetén
+        }
+    }
+
+    /**
      * Install email template files
      *
      * @param   object  $app  Application object
@@ -175,8 +200,9 @@ class PlgSolidrespaymentRevolutInstallerScript
      */
     private function installEmailTemplates($app)
     {
+        $templateName = $this->getDefaultTemplate();
         $srcDir = JPATH_PLUGINS . '/solidrespayment/' . $this->element . '/asset/emails';
-        $destDir = JPATH_ROOT . '/templates/greenery/html/layouts/com_solidres/emails';
+        $destDir = JPATH_ROOT . '/templates/' . $templateName . '/html/layouts/com_solidres/emails';
 
         // Create destination directory if it doesn't exist
         if (!Folder::exists($destDir))
