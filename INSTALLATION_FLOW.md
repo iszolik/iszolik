@@ -28,7 +28,10 @@
                    │       └─► Copy: asset/reservation.php → libraries/solidres/reservation/reservation.php
                    │
                    ├─► ★ installEmailTemplates($app)
-                   │       ├─► Check/Create: templates/greenery/html/layouts/com_solidres/emails/
+                   │       ├─► Detect default template via getDefaultTemplate()
+                   │       │   ├─► Query: #__template_styles WHERE client_id=0 AND home=1
+                   │       │   └─► Fallback: 'greenery' if detection fails
+                   │       ├─► Check/Create: templates/{detected_template}/html/layouts/com_solidres/emails/
                    │       └─► For each email template:
                    │           ├─► reservation_complete_customer_html.php
                    │           ├─► reservation_complete_customer_html_inliner.php
@@ -103,10 +106,10 @@
 
 ## Files Installed
 
-| Plugin  | Source                                      | Destination                                              |
-|---------|---------------------------------------------|----------------------------------------------------------|
-| Both    | asset/reservation.php                       | libraries/solidres/reservation/reservation.php           |
-| Both    | asset/emails/*.php (5 files)                | templates/greenery/html/layouts/com_solidres/emails/     |
+| Plugin  | Source                                      | Destination                                                      |
+|---------|---------------------------------------------|------------------------------------------------------------------|
+| Both    | asset/reservation.php                       | libraries/solidres/reservation/reservation.php                   |
+| Both    | asset/emails/*.php (5 files)                | templates/{detected_template}/html/layouts/com_solidres/emails/  |
 
 ## Uninstallation Behavior
 

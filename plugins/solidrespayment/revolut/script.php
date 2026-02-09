@@ -22,6 +22,27 @@ use Joomla\CMS\Language\Text;
 class PlgSolidrespaymentRevolutInstallerScript
 {
     /**
+     * Client ID for frontend (site)
+     *
+     * @var int
+     */
+    private const CLIENT_SITE = 0;
+
+    /**
+     * Flag for default template
+     *
+     * @var int
+     */
+    private const DEFAULT_TEMPLATE = 1;
+
+    /**
+     * Fallback template name
+     *
+     * @var string
+     */
+    private const FALLBACK_TEMPLATE = 'greenery';
+
+    /**
      * Plugin element name
      *
      * @var string
@@ -169,7 +190,7 @@ class PlgSolidrespaymentRevolutInstallerScript
     /**
      * Get the default template name from Joomla
      *
-     * @return  string  The default template name, 'greenery' as fallback
+     * @return  string  The default template name, fallback to FALLBACK_TEMPLATE if not found
      */
     private function getDefaultTemplate()
     {
@@ -178,16 +199,17 @@ class PlgSolidrespaymentRevolutInstallerScript
         
         $query->select($db->quoteName('template'))
               ->from($db->quoteName('#__template_styles'))
-              ->where($db->quoteName('client_id') . ' = 0')  // 0 = frontend (site)
-              ->where($db->quoteName('home') . ' = 1');      // default template
+              ->where($db->quoteName('client_id') . ' = ' . self::CLIENT_SITE)
+              ->where($db->quoteName('home') . ' = ' . self::DEFAULT_TEMPLATE);
         
         $db->setQuery($query);
         
         try {
             $template = $db->loadResult();
-            return $template ?: 'greenery'; // Fallback ha nem található
-        } catch (\Exception $e) {
-            return 'greenery'; // Fallback hiba esetén
+            return $template ?: self::FALLBACK_TEMPLATE;
+        } catch (\RuntimeException $e) {
+            // Database error - use fallback
+            return self::FALLBACK_TEMPLATE;
         }
     }
 
