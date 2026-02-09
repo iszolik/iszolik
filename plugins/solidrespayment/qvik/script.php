@@ -278,40 +278,82 @@ class PlgSolidrespaymentQvikInstallerScript
      */
     private function appendLanguageStrings($app)
     {
-        $languageStrings = [
-            'PLG_SOLIDRESPAYMENT_QVIK_TITLE="Qvik"',
-            'PLG_SOLIDRESPAYMENT_QVIK_DESC="Qvik payment gateway integration for Solidres"',
-        ];
-
+        $pluginPath = JPATH_PLUGINS . '/solidrespayment/' . $this->element . '/asset';
+        
         $langFiles = [
-            JPATH_ADMINISTRATOR . '/language/en-GB/en-GB.com_solidres.ini',
-            JPATH_ADMINISTRATOR . '/language/hu-HU/hu-HU.com_solidres.ini',
+            [
+                'source' => $pluginPath . '/en-GB.com_solidres.ini',
+                'target' => JPATH_ADMINISTRATOR . '/language/en-GB/en-GB.com_solidres.ini',
+                'label'  => 'en-GB nyelvi konstansok',
+            ],
+            [
+                'source' => $pluginPath . '/hu-HU.com_solidres.ini',
+                'target' => JPATH_ADMINISTRATOR . '/language/hu-HU/hu-HU.com_solidres.ini',
+                'label'  => 'hu-HU nyelvi konstansok',
+            ],
         ];
 
         foreach ($langFiles as $langFile)
         {
-            if (File::exists($langFile))
-            {
-                $content = File::read($langFile);
-                $modified = false;
-
-                foreach ($languageStrings as $string)
-                {
-                    if (strpos($content, $string) === false)
-                    {
-                        $content .= "\n" . $string;
-                        $modified = true;
-                    }
-                }
-
-                if ($modified)
-                {
-                    File::write($langFile, $content);
-                }
-            }
+            $this->appendToFile(
+                $langFile['source'],
+                $langFile['target'],
+                '',
+                $langFile['label'],
+                $app
+            );
         }
+    }
 
-        $app->enqueueMessage('✅ Nyelvi konstansok frissítve', 'message');
+    /**
+     * Append content from source file to target file with duplicate check
+     *
+     * @param   string  $sourceFile   Path to source file
+     * @param   string  $targetFile   Path to target file
+     * @param   string  $checkString  Deprecated parameter (not used)
+     * @param   string  $label        Label for messages
+     * @param   object  $app          Application object
+     *
+     * @return  boolean  True on success, false on failure
+     */
+    private function appendToFile($sourceFile, $targetFile, $checkString, $label, $app)
+    {
+        // Ellenőrizzük, létezik-e a forrás fájl
+        if (!file_exists($sourceFile)) {
+            $app->enqueueMessage('⚠️ Nyelvi kiegészítő nem található: ' . $label, 'warning');
+            return false;
+        }
+        
+        // Beolvassuk a forrás és cél fájlokat
+        $newStrings = file_get_contents($sourceFile);
+        $existingContent = file_get_contents($targetFile);
+        
+        // Plugin-specifikus marker keresése (QVIK)
+        $markerStart = '; === QVIK PAYMENT PLUGIN - START ===';
+        
+        if (strpos($existingContent, $markerStart) !== false) {
+            $app->enqueueMessage('ℹ️ ' . $label . ' konstansok már telepítve vannak (QVIK marker található).', 'info');
+            return true;
+        }
+        
+        // Backup készítése
+        $backupFile = $targetFile . '.backup.' . date('YmdHis');
+        if (!File::copy($targetFile, $backupFile)) {
+            $app->enqueueMessage('⚠️ Nem sikerült backup: ' . $label, 'warning');
+        } else {
+            $app->enqueueMessage('📦 Backup: ' . $label . ' (' . basename($backupFile) . ')', 'info');
+        }
+        
+        // Hozzáfűzzük az új konstansokat
+        $newContent = $existingContent . "\n\n" . $newStrings;
+        
+        if (file_put_contents($targetFile, $newContent)) {
+            $app->enqueueMessage('✅ ' . $label . ' konstansok hozzáadva!', 'success');
+            return true;
+        } else {
+            $app->enqueueMessage('❌ Hiba: ' . $label, 'error');
+            return false;
+        }
     }
 
     /**
