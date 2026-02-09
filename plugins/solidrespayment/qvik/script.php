@@ -172,12 +172,40 @@ class PlgSolidrespaymentQvikInstallerScript
     }
 
     /**
+     * Get the default frontend template name
+     *
+     * Queries the Joomla database to find the default frontend template.
+     * This ensures that files are installed to the correct template directory
+     * regardless of which template is active on the site.
+     *
+     * @return  string  The default template name, or 'greenery' as fallback
+     */
+    private function getDefaultTemplate()
+    {
+        $db = Factory::getDbo();
+        $query = $db->getQuery(true);
+        
+        $query->select($db->quoteName('template'))
+              ->from($db->quoteName('#__template_styles'))
+              ->where($db->quoteName('client_id') . ' = 0')  // 0 = frontend (site)
+              ->where($db->quoteName('home') . ' = 1');      // default template
+        
+        $db->setQuery($query);
+        
+        try {
+            $template = $db->loadResult();
+            return $template ?: 'greenery'; // Fallback ha nem található
+        } catch (\Exception $e) {
+            return 'greenery'; // Fallback hiba esetén
+        }
+    }
+
+    /**
      * Install email template files
      *
-     * Note: This method installs email templates to the 'greenery' template directory.
-     * The 'greenery' template must be installed and active for these templates to work.
-     * If using a different template, you may need to copy these files manually to your
-     * active template's directory: templates/[your-template]/html/layouts/com_solidres/emails/
+     * Note: This method installs email templates to the active default template directory.
+     * The template is detected automatically from Joomla's database settings.
+     * If no default template is found, 'greenery' is used as fallback.
      *
      * @param   object  $app  Application object
      *
@@ -185,8 +213,9 @@ class PlgSolidrespaymentQvikInstallerScript
      */
     private function installEmailTemplates($app)
     {
+        $templateName = $this->getDefaultTemplate();
         $srcDir = JPATH_PLUGINS . '/solidrespayment/' . $this->element . '/asset/emails';
-        $destDir = JPATH_ROOT . '/templates/greenery/html/layouts/com_solidres/emails';
+        $destDir = JPATH_ROOT . '/templates/' . $templateName . '/html/layouts/com_solidres/emails';
 
         // Create destination directory if it doesn't exist
         if (!Folder::exists($destDir))
