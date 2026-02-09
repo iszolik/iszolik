@@ -37,7 +37,9 @@ A telepítés során a script automatikusan:
 
 ✅ **Telepíti az 5 email template fájlt**
    - Forrás: `plugins/solidrespayment/[qvik|revolut]/asset/emails/`
-   - Cél: `templates/greenery/html/layouts/com_solidres/emails/`
+   - Cél: `templates/[AKTUÁLIS-DEFAULT-TEMPLATE]/html/layouts/com_solidres/emails/`
+   - Az installer automatikusan detektálja a Joomla default frontend template-jét
+   - Fallback: `greenery` ha nem sikerül a detektálás
    - Email fájlok:
      - `reservation_complete_customer_html.php`
      - `reservation_complete_customer_html_inliner.php`
@@ -84,14 +86,11 @@ reservation.php.backup.20260209095752
 reservation_complete_customer_html.php.backup.20260209095752
 ```
 
-## Ha Másik Template-et Használsz (Nem Greenery)
+## Template Kompatibilitás
 
-Ha nem a **Greenery** template-et használod:
+Az installer automatikusan detektálja a Joomla default frontend template-jét az adatbázisból (`#__template_styles` tábla), így bármilyen template-tel kompatibilis (pl. Cassiopeia, Protostar, Greenery, egyedi template-ek).
 
-1. A telepítő figyelmeztet, hogy nem sikerült telepíteni az email template-eket
-2. Manuálisan másold át a fájlokat:
-   - Forrás: `plugins/solidrespayment/[qvik|revolut]/asset/emails/`
-   - Cél: `templates/[TE-TEMPLATE-ED]/html/layouts/com_solidres/emails/`
+Ha a detektálás sikertelen, az installer figyelmeztetést jelenít meg és a `greenery` template-et használja fallback-ként.
 
 ## Több Plugin Telepítése (Qvik + Revolut)
 

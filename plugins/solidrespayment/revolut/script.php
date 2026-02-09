@@ -196,6 +196,9 @@ class PlgSolidrespaymentRevolutInstallerScript
             $template = $db->loadResult();
             return $template ?: 'greenery'; // Fallback ha nem található
         } catch (\Exception $e) {
+            // Log the error for debugging
+            $app = Factory::getApplication();
+            $app->enqueueMessage('⚠️ Hiba a template detektálása során, fallback használata: greenery. Hiba: ' . $e->getMessage(), 'warning');
             return 'greenery'; // Fallback hiba esetén
         }
     }

@@ -31,7 +31,9 @@
 5. `reservation_complete_customer_pdf.php`
 
 **Forrás:** `plugins/solidrespayment/[qvik|revolut]/asset/emails/`  
-**Cél:** `templates/greenery/html/layouts/com_solidres/emails/`
+**Cél:** `templates/[AKTUÁLIS-DEFAULT-TEMPLATE]/html/layouts/com_solidres/emails/`
+
+Az installer automatikusan detektálja a Joomla default frontend template-jét az adatbázisból, így bármilyen template-tel működik (Cassiopeia, Protostar, Greenery, egyedi template-ek).
 
 **Jellemzők:**
 - Automatikus könyvtár létrehozás

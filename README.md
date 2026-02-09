@@ -54,7 +54,9 @@ plugins/solidrespayment/
 ### Step 2: Email Template Installation
 
 **Source:** `plugins/solidrespayment/[qvik|revolut]/asset/emails/`  
-**Destination:** `templates/greenery/html/layouts/com_solidres/emails/`
+**Destination:** `templates/[DEFAULT-TEMPLATE]/html/layouts/com_solidres/emails/`
+
+The installer automatically detects the default frontend template from Joomla's database and installs email templates to the appropriate directory. If detection fails, it falls back to the 'greenery' template.
 
 The following email template files are installed:
 - `reservation_complete_customer_html.php` - HTML email for customer

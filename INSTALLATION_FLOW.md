@@ -28,7 +28,8 @@
                    │       └─► Copy: asset/reservation.php → libraries/solidres/reservation/reservation.php
                    │
                    ├─► ★ installEmailTemplates($app)
-                   │       ├─► Check/Create: templates/greenery/html/layouts/com_solidres/emails/
+                   │       ├─► getDefaultTemplate() - Detect active template from DB
+                   │       ├─► Check/Create: templates/[DETECTED-TEMPLATE]/html/layouts/com_solidres/emails/
                    │       └─► For each email template:
                    │           ├─► reservation_complete_customer_html.php
                    │           ├─► reservation_complete_customer_html_inliner.php
