@@ -136,6 +136,11 @@ class PlgSolidrespaymentQvikInstallerScript
     /**
      * Install reservation.php file
      *
+     * Note: This file is installed to a shared library location (libraries/solidres/reservation/).
+     * If multiple payment plugins are installed, each plugin will overwrite this file with its
+     * own version. This is expected behavior - the last installed/updated plugin's version
+     * will be used. Ensure all payment plugin versions of this file are compatible.
+     *
      * @param   object  $app  Application object
      *
      * @return  void
@@ -168,6 +173,11 @@ class PlgSolidrespaymentQvikInstallerScript
 
     /**
      * Install email template files
+     *
+     * Note: This method installs email templates to the 'greenery' template directory.
+     * The 'greenery' template must be installed and active for these templates to work.
+     * If using a different template, you may need to copy these files manually to your
+     * active template's directory: templates/[your-template]/html/layouts/com_solidres/emails/
      *
      * @param   object  $app  Application object
      *
@@ -282,7 +292,7 @@ class PlgSolidrespaymentQvikInstallerScript
         {
             if (File::exists($langFile))
             {
-                $content = file_get_contents($langFile);
+                $content = File::read($langFile);
                 $modified = false;
 
                 foreach ($languageStrings as $string)
@@ -296,7 +306,7 @@ class PlgSolidrespaymentQvikInstallerScript
 
                 if ($modified)
                 {
-                    file_put_contents($langFile, $content);
+                    File::write($langFile, $content);
                 }
             }
         }
