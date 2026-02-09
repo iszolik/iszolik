@@ -317,20 +317,20 @@ class PlgSolidrespaymentRevolutInstallerScript
     private function appendToFile($sourceFile, $targetFile, $label, $app)
     {
         // Ellenőrizzük, létezik-e a forrás fájl
-        if (!file_exists($sourceFile)) {
+        if (!File::exists($sourceFile)) {
             $app->enqueueMessage('⚠️ Nyelvi kiegészítő nem található: ' . $label, 'warning');
             return false;
         }
         
         // Ellenőrizzük, létezik-e a cél fájl
-        if (!file_exists($targetFile)) {
+        if (!File::exists($targetFile)) {
             $app->enqueueMessage('⚠️ Cél fájl nem található: ' . $label, 'warning');
             return false;
         }
         
         // Beolvassuk a forrás és cél fájlokat
-        $newStrings = file_get_contents($sourceFile);
-        $existingContent = file_get_contents($targetFile);
+        $newStrings = File::read($sourceFile);
+        $existingContent = File::read($targetFile);
         
         // Plugin-specifikus marker keresése (REVOLUT)
         $markerStart = '; === REVOLUT PAYMENT PLUGIN - START ===';
@@ -351,7 +351,7 @@ class PlgSolidrespaymentRevolutInstallerScript
         // Hozzáfűzzük az új konstansokat
         $newContent = $existingContent . "\n\n" . $newStrings;
         
-        if (file_put_contents($targetFile, $newContent)) {
+        if (File::write($targetFile, $newContent)) {
             $app->enqueueMessage('✅ ' . $label . ' konstansok hozzáadva!', 'success');
             return true;
         } else {
