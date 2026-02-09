@@ -133,7 +133,7 @@ This will verify:
 
 ### Important Considerations
 
-1. **Template Requirement**: The email templates are installed to the `greenery` template directory. This template must be installed and active for the email templates to work. If using a different template, you will need to manually copy the email template files to your active template's directory: `templates/[your-template]/html/layouts/com_solidres/emails/`
+1. **Template Detection**: The email templates are automatically installed to the active default frontend template directory. The installer queries Joomla's database to detect which template is set as default (`#__template_styles` table where `client_id = 0` and `home = 1`). If the detection fails, it falls back to the `greenery` template and displays a warning message.
 
 2. **Reservation.php Conflicts**: The `reservation.php` file is installed to a shared library location (`libraries/solidres/reservation/`). If multiple Solidres payment plugins are installed (e.g., both Qvik and Revolut), each plugin will overwrite this file with its own version during installation/update. This is expected behavior - the last installed/updated plugin's version will be used. **Ensure all payment plugin versions of this file are compatible.**
 
