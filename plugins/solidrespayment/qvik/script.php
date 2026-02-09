@@ -298,7 +298,6 @@ class PlgSolidrespaymentQvikInstallerScript
             $this->appendToFile(
                 $langFile['source'],
                 $langFile['target'],
-                '',
                 $langFile['label'],
                 $app
             );
@@ -310,17 +309,22 @@ class PlgSolidrespaymentQvikInstallerScript
      *
      * @param   string  $sourceFile   Path to source file
      * @param   string  $targetFile   Path to target file
-     * @param   string  $checkString  Deprecated parameter (not used)
      * @param   string  $label        Label for messages
      * @param   object  $app          Application object
      *
      * @return  boolean  True on success, false on failure
      */
-    private function appendToFile($sourceFile, $targetFile, $checkString, $label, $app)
+    private function appendToFile($sourceFile, $targetFile, $label, $app)
     {
         // Ellenőrizzük, létezik-e a forrás fájl
         if (!file_exists($sourceFile)) {
             $app->enqueueMessage('⚠️ Nyelvi kiegészítő nem található: ' . $label, 'warning');
+            return false;
+        }
+        
+        // Ellenőrizzük, létezik-e a cél fájl
+        if (!file_exists($targetFile)) {
+            $app->enqueueMessage('⚠️ Cél fájl nem található: ' . $label, 'warning');
             return false;
         }
         
