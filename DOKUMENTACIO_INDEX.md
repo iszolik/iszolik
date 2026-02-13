@@ -28,7 +28,7 @@ Ez ad egy teljes áttekintést és navigációs útmutatót.
 - 30-45 perc olvasási idő
 
 ### 💻 Kód szintű részleteket keresel?
-**Olvasd el:** [FORR ASKOD_MODOSITASOK.md](FORR ASKOD_MODOSITASOK.md)  
+**Olvasd el:** [FORRASKOD_MODOSITASOK.md](FORRASKOD_MODOSITASOK.md)  
 - Előtte/utána összehasonlítások
 - Teljes forráskód kommentekkel
 - Minden módosítás részletezve
@@ -43,7 +43,7 @@ Ez ad egy teljes áttekintést és navigációs útmutatót.
 | **README_HU.md** | Áttekintés | 🇭🇺 Magyar | Fő áttekintő dokumentum, navigációs útmutató |
 | **GYORS_REFERENCIA.md** | Referencia | 🇭🇺 Magyar | Gyors összefoglaló, kód példák, checklist |
 | **JAVITASOK_RESZLETES_DOKUMENTACIO.md** | Technikai | 🇭🇺 Magyar | Teljes körű technikai dokumentáció |
-| **FORR ASKOD_MODOSITASOK.md** | Kód | 🇭🇺 Magyar | Forráskód módosítások részletesen |
+| **FORRASKOD_MODOSITASOK.md** | Kód | 🇭🇺 Magyar | Forráskód módosítások részletesen |
 | **DOKUMENTACIO_INDEX.md** | Index | 🇭🇺 Magyar | Ez a fájl - dokumentáció navigáció |
 
 ---
@@ -60,7 +60,7 @@ DOKUMENTACIO_INDEX.md (START)
          |
          +---> JAVITASOK_RESZLETES_DOKUMENTACIO.md (Teljes technikai)
          |
-         +---> FORR ASKOD_MODOSITASOK.md (Forráskód)
+         +---> FORRASKOD_MODOSITASOK.md (Forráskód)
 ```
 
 ---
@@ -74,11 +74,11 @@ DOKUMENTACIO_INDEX.md (START)
 ### Útvonal #2: Teljes Megértés (60-90 perc)
 1. [README_HU.md](README_HU.md) - Áttekintés (5 perc)
 2. [JAVITASOK_RESZLETES_DOKUMENTACIO.md](JAVITASOK_RESZLETES_DOKUMENTACIO.md) - Részletes (45 perc)
-3. [FORR ASKOD_MODOSITASOK.md](FORR ASKOD_MODOSITASOK.md) - Forráskód (30 perc)
+3. [FORRASKOD_MODOSITASOK.md](FORRASKOD_MODOSITASOK.md) - Forráskód (30 perc)
 
 ### Útvonal #3: Implementálók Számára (30-45 perc)
 1. [GYORS_REFERENCIA.md](GYORS_REFERENCIA.md) - Gyors áttekintés (10 perc)
-2. [FORR ASKOD_MODOSITASOK.md](FORR ASKOD_MODOSITASOK.md) - Kód példák (20 perc)
+2. [FORRASKOD_MODOSITASOK.md](FORRASKOD_MODOSITASOK.md) - Kód példák (20 perc)
 3. [JAVITASOK_RESZLETES_DOKUMENTACIO.md](JAVITASOK_RESZLETES_DOKUMENTACIO.md) - Részletek (15 perc)
 
 ---
@@ -88,22 +88,22 @@ DOKUMENTACIO_INDEX.md (START)
 ### AJAX URL Építés
 - **Gyors**: [GYORS_REFERENCIA.md § buildAjaxUrl](GYORS_REFERENCIA.md#buildajaxurlparams)
 - **Részletes**: [JAVITASOK_RESZLETES_DOKUMENTACIO.md § buildAjaxUrl](JAVITASOK_RESZLETES_DOKUMENTACIO.md#1-buildajaxurlparams-függvény)
-- **Kód**: [FORR ASKOD_MODOSITASOK.md § buildAjaxUrl](FORR ASKOD_MODOSITASOK.md#javascript-függvények---buildajaxurl)
+- **Kód**: [FORRASKOD_MODOSITASOK.md § buildAjaxUrl](FORRASKOD_MODOSITASOK.md#javascript-függvények---buildajaxurl)
 
 ### Redirect URL Építés
 - **Gyors**: [GYORS_REFERENCIA.md § buildRedirectUrl](GYORS_REFERENCIA.md#2-buildredirecturlview-additionalparams)
 - **Részletes**: [JAVITASOK_RESZLETES_DOKUMENTACIO.md § buildRedirectUrl](JAVITASOK_RESZLETES_DOKUMENTACIO.md#2-buildredirecturlview-additionalparams-függvény)
-- **Kód**: [FORR ASKOD_MODOSITASOK.md § buildRedirectUrl](FORR ASKOD_MODOSITASOK.md#javascript-függvények---buildredirecturl)
+- **Kód**: [FORRASKOD_MODOSITASOK.md § buildRedirectUrl](FORRASKOD_MODOSITASOK.md#javascript-függvények---buildredirecturl)
 
 ### Teljes Folyamat
 - **Gyors**: [GYORS_REFERENCIA.md § Működés](GYORS_REFERENCIA.md#-hogyan-működik)
 - **Részletes**: [JAVITASOK_RESZLETES_DOKUMENTACIO.md § Példa](JAVITASOK_RESZLETES_DOKUMENTACIO.md#teljes-használati-példa-fizetés-megerősítés)
-- **Kód**: [FORR ASKOD_MODOSITASOK.md § processPaymentConfirmation](FORR ASKOD_MODOSITASOK.md#teljes-használati-példa---processpaymentconfirmation)
+- **Kód**: [FORRASKOD_MODOSITASOK.md § processPaymentConfirmation](FORRASKOD_MODOSITASOK.md#teljes-használati-példa---processpaymentconfirmation)
 
 ### Tesztelés
 - **Gyors**: [GYORS_REFERENCIA.md § Checklist](GYORS_REFERENCIA.md#-tesztelési-gyors-checklist)
 - **Részletes**: [JAVITASOK_RESZLETES_DOKUMENTACIO.md § Tesztelés](JAVITASOK_RESZLETES_DOKUMENTACIO.md#tesztelt-forgatókönyvek)
-- **Kód**: [FORR ASKOD_MODOSITASOK.md § Checklist](FORR ASKOD_MODOSITASOK.md#tesztelési-checklist)
+- **Kód**: [FORRASKOD_MODOSITASOK.md § Checklist](FORRASKOD_MODOSITASOK.md#tesztelési-checklist)
 
 ### Hibaelhárítás
 - **Gyors**: [GYORS_REFERENCIA.md § Debug](GYORS_REFERENCIA.md#-debug-üzenetek)
@@ -123,7 +123,7 @@ DOKUMENTACIO_INDEX.md (START)
 → [JAVITASOK_RESZLETES_DOKUMENTACIO.md](JAVITASOK_RESZLETES_DOKUMENTACIO.md)
 
 ### "Látni akarom a konkrét kódot"
-→ [FORR ASKOD_MODOSITASOK.md](FORR ASKOD_MODOSITASOK.md)
+→ [FORRASKOD_MODOSITASOK.md](FORRASKOD_MODOSITASOK.md)
 
 ### "Hol vannak az eredeti fájlok?"
 → A javítások a PR #6-ban vannak, nem ebben a branch-ben. Ez csak dokumentáció.

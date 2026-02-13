@@ -42,7 +42,7 @@ Ez a repository dokumentálja a Qvik és Revolut fizetési plugin-okban elvégze
 
 **👉 [Olvasd el itt](JAVITASOK_RESZLETES_DOKUMENTACIO.md)**
 
-### 3. 💻 FORR ASKOD_MODOSITASOK.md
+### 3. 💻 FORRASKOD_MODOSITASOK.md
 **Ki számára:** Kód szintű részleteket keresőknek  
 **Mit tartalmaz:**
 - Előtte/utána kód összehasonlítások
@@ -51,7 +51,7 @@ Ez a repository dokumentálja a Qvik és Revolut fizetési plugin-okban elvégze
 - Minden módosítás dokumentálva
 - Kód példák minden szenárióban
 
-**👉 [Olvasd el itt](FORR ASKOD_MODOSITASOK.md)**
+**👉 [Olvasd el itt](FORRASKOD_MODOSITASOK.md)**
 
 ### 4. 📋 README.md
 **Ki számára:** Kezdőknek  
@@ -64,7 +64,7 @@ Ez a repository dokumentálja a Qvik és Revolut fizetési plugin-okban elvégze
 ├── README.md                              # Ez a fájl
 ├── GYORS_REFERENCIA.md                    # Gyors összefoglaló
 ├── JAVITASOK_RESZLETES_DOKUMENTACIO.md   # Részletes technikai dokumentáció
-├── FORR ASKOD_MODOSITASOK.md             # Forráskód módosítások részletesen
+├── FORRASKOD_MODOSITASOK.md              # Forráskód módosítások részletesen
 ├── IMPLEMENTATION_NOTES.md                # Angol implementációs jegyzet
 ├── SOLUTION_SUMMARY.md                    # Angol összefoglaló
 └── plugins/solidrespayment/
@@ -85,7 +85,7 @@ Ez a repository dokumentálja a Qvik és Revolut fizetési plugin-okban elvégze
 3. **Részletek** → `JAVITASOK_RESZLETES_DOKUMENTACIO.md`
 
 ### Ha kód módosításokat keresel:
-1. **Forráskód példák** → `FORR ASKOD_MODOSITASOK.md`
+1. **Forráskód példák** → `FORRASKOD_MODOSITASOK.md`
 2. **Eredeti fájlok** → `plugins/solidrespayment/*/asset/confirmation.php`
 
 ### Ha angol dokumentációt szeretnél:
