@@ -153,7 +153,7 @@ console.error('[Qvik] Hiba:', error);
 
 ### Fő Dokumentumok:
 1. **JAVITASOK_RESZLETES_DOKUMENTACIO.md** - Teljes részletes leírás
-2. **FORR ASKOD_MODOSITASOK.md** - Forráskód összehasonlítások
+2. **FORRASKOD_MODOSITASOK.md** - Forráskód összehasonlítások
 3. **GYORS_REFERENCIA.md** - Ez a dokumentum
 
 ### További Információk:
