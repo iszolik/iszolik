@@ -55,7 +55,6 @@ defined('_JEXEC') or die;
         
         // Preserve any existing query parameters from current URL
         var existingParams = new URLSearchParams(window.location.search);
-        var newParams = new URLSearchParams(params);
         
         // Merge params, with new params taking precedence
         for (var key in params) {
