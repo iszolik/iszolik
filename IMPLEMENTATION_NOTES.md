@@ -327,13 +327,45 @@ payButton.disabled = true;
 - [ ] Form validálás működik
 - [ ] Automatikus űrlap kitöltés működik
 
+## Lokalizációs Megjegyzések
+
+### Hard-coded Magyar Szövegek
+
+A kódban néhány helyen hard-coded magyar szövegek találhatók a JavaScript-ben (pl. "Feldolgozás...", "Adatok mentése..."). 
+
+**Miért vannak így?**
+- A követelmény magyar nyelvű implementációt kért
+- Ez egy forráskód snippet repository, nem teljes plugin
+- A kód szemléltetési és referencia célokat szolgál
+
+**Éles használathoz ajánlott módosítás:**
+
+Javasolt a hard-coded szövegek helyettesítése JText konstansokkal vagy dinamikus változókkal:
+
+```javascript
+// Helyett:
+payButton.textContent = 'Feldolgozás...';
+
+// Használd:
+payButton.textContent = '<?php echo JText::_('PLG_SOLIDRESPAYMENT_QVIK_PROCESSING'); ?>';
+```
+
+**Érintett helyek:**
+1. `confirmationform.php` (189. sor) - "Feldolgozás..."
+2. `guestform.php` (258. sor) - "Adatok mentése..."
+3. Alert üzenetek a hibakezelésben
+
+**Megoldás:**
+Adj hozzá új nyelvi konstansokat a plugin nyelvi fájljához és használd azokat PHP-ból a JavaScript-be injektálva.
+
 ## Telepítési Útmutató
 
 1. **Backup készítése** az eredeti fájlokról
 2. **Fájlok másolása** a megfelelő helyekre
-3. **Paraméterek ellenőrzése** a plugin beállításokban
-4. **Tesztelés** minden szcenárióban
-5. **Monitoring** az első éles használat során
+3. **Lokalizáció módosítása** (opcionális, éles használathoz ajánlott)
+4. **Paraméterek ellenőrzése** a plugin beállításokban
+5. **Tesztelés** minden szcenárióban
+6. **Monitoring** az első éles használat során
 
 ## Támogatás
 
