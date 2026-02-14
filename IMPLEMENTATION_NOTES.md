@@ -246,7 +246,7 @@ if (currentParams.has('qvik_status') || currentParams.has('payment_status')) {
 }
 ```
 
-**Miért hasFields?**
+**Miért has()?**
 - A fizetési provider különböző paraméter neveket használhat
 - Rugalmas ellenőrzés több lehetőséget is támogat
 
