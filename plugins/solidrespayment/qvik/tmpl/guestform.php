@@ -95,7 +95,7 @@ $itemId      = $this->app->input->getInt('Itemid', 0);
      * Ez a függvény biztosítja, hogy minden URL tartalmazza:
      * - A teljes origin-t (protocol + domain)
      * - A teljes pathname-et (beleértve az almenü szegmenseket is)
-     * - Az összes szükséges paraétert (hub_id, property_id, site_id, Itemid)
+     * - Az összes szükséges paramétert (hub_id, property_id, site_id, Itemid)
      * 
      * Így elkerülhetők a 404 hibák és az útvonalvesztés multisite/hub/almenü környezetekben.
      */
