@@ -1,6 +1,7 @@
 # Suppress Imagick version mismatch warning
 # The warning "Imagick was compiled against ImageMagick version X but version Y is loaded"
 # occurs during PHP module initialization and is harmless
-php_flag display_errors Off
+# This configuration suppresses warnings while keeping errors visible
 php_value error_reporting 32759
-# 32759 = E_ALL & ~E_WARNING (all errors except warnings)
+# 32759 = E_ALL & ~E_WARNING (all errors and notices except warnings)
+# Alternative for production: Use php.ini configuration instead of .htaccess
