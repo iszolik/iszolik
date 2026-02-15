@@ -1,0 +1,14 @@
+# Suppress Imagick version mismatch warning
+# The warning "Imagick was compiled against ImageMagick version X but version Y is loaded"
+# occurs during PHP module initialization and is harmless
+#
+# TRADE-OFF WARNING: This configuration suppresses ALL E_WARNING messages,
+# not just Imagick warnings. This may hide legitimate warnings about deprecated
+# functions, type mismatches, or other issues.
+#
+# For production environments: Configure php.ini instead, or update Imagick to match
+# the ImageMagick version. See IMAGICK_WARNING.md for detailed solutions.
+#
+php_value error_reporting 32759
+# 32759 = E_ALL & ~E_WARNING (all error levels except warnings)
+# Note: .htaccess requires numeric values; symbolic constants are not supported
