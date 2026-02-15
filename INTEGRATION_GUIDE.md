@@ -7,9 +7,12 @@ Ez a dokumentum részletesen bemutatja, hogyan kell integrálni a `payment-ajax-
 ## Fő Funkciók
 
 ### 1. Abszolút AJAX Végpont
-- **Cél**: Minden AJAX kérés az abszolút `/index.php` végpontra POST-ol
+- **Cél**: Minden AJAX kérés a helyes index.php végpontra POST-ol, megőrizve az almenü struktúrát
 - **Implementáció**: `buildAjaxUrl()` függvény
-- **Eredmény**: `https://domain.hu/index.php` (mindig a domain gyökérből!)
+- **Eredmény**: 
+  - Gyökér menüből: `https://domain.hu/index.php`
+  - Almenüből: `https://domain.hu/demo-tobbszallashely/index.php`
+- **Előny**: Automatikusan detektálja az index.php pozícióját az útvonalban, így elkerüli a 404 hibákat
 
 ### 2. Dinamikus Átirányítás
 - **Cél**: Az aktuális útvonalban `guestform` → `confirmationform` csere
@@ -478,6 +481,13 @@ console.log(window.PaymentAjaxHandler.config);
 4. **Hibaüzenetek**: Ne adjon ki érzékeny információkat a hibaüzenetekben
 
 ## Changelog
+
+### v1.1.0 (2026-02-15)
+- **FIX**: 404 hiba javítása almenü struktúrákban
+- `buildAjaxUrl()` most automatikusan detektálja az index.php pozícióját
+- Támogatja mind a gyökér (/index.php), mind az almenü (/path/index.php) útvonalakat
+- Megőrzi a teljes pathname-et beleértve az almenü szegmenseket
+- Részletes debug logolás hozzáadva (pathname, ajax path, full URL)
 
 ### v1.0.0 (2026-02-15)
 - Kezdeti kiadás

@@ -25,7 +25,9 @@
     const CONFIG = {
         // AJAX végpont beállítások
         ajax: {
-            // Abszolút végpont a domain gyökérből (ne változtassa meg!)
+            // Végpont fallback érték (ha az URL nem tartalmazza az index.php-t)
+            // A buildAjaxUrl() automatikusan detektálja az index.php pozícióját
+            // és megőrzi az almenü struktúrát (pl. /demo-tobbszallashely/index.php)
             endpoint: '/index.php',
             // HTTP metódus
             method: 'POST',
@@ -83,20 +85,37 @@
 
     /**
      * Abszolút AJAX URL építése
-     * Mindig az /index.php végpontra mutat a domain gyökérből
+     * Megőrzi a teljes útvonalat beleértve az almenü szegmenseket is
+     * (pl. /demo-tobbszallashely/index.php)
      * 
      * @returns {string} Abszolút AJAX URL
      */
     function buildAjaxUrl() {
         const origin = window.location.origin;
-        const endpoint = CONFIG.ajax.endpoint;
+        const pathname = window.location.pathname;
+        
+        // Keressük meg az index.php pozícióját az útvonalban
+        const indexPhpPos = pathname.indexOf('index.php');
+        
+        // Ha tartalmazza az index.php-t, akkor vágunk ott
+        // Megőrizzük az almenü struktúrát (pl. /demo-tobbszallashely/index.php)
+        let ajaxPath;
+        if (indexPhpPos !== -1) {
+            // Használjuk az útvonalat egészen az index.php végéig
+            ajaxPath = pathname.substring(0, indexPhpPos) + 'index.php';
+        } else {
+            // Ha nincs index.php az útvonalban, használjuk a konfigurált végpontot
+            ajaxPath = CONFIG.ajax.endpoint;
+        }
         
         // Összeállítjuk az abszolút URL-t
-        const ajaxUrl = origin + endpoint;
+        const ajaxUrl = origin + ajaxPath;
         
         // Debug logolás (development módban)
         if (window.console && window.console.log) {
-            console.log('[Payment AJAX] URL épül:', ajaxUrl);
+            console.log('[Payment AJAX] Eredeti pathname:', pathname);
+            console.log('[Payment AJAX] AJAX útvonal:', ajaxPath);
+            console.log('[Payment AJAX] Teljes URL:', ajaxUrl);
         }
         
         return ajaxUrl;

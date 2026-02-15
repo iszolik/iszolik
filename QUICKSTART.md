@@ -160,8 +160,15 @@ window.PaymentAjaxHandler.buildRedirectUrl()
 ### AJAX Végpont
 
 ```
-Eredeti oldal: https://domain.hu/foglalas/menu/guestform?id=123
-AJAX kérés:    https://domain.hu/index.php ← Mindig abszolút!
+Gyökér menüből:
+  Oldal URL:  https://domain.hu/index.php?option=com_ajax&...
+  AJAX kérés: https://domain.hu/index.php ✓
+
+Almenüből:
+  Oldal URL:  https://domain.hu/demo-tobbszallashely/index.php?option=com_ajax&...
+  AJAX kérés: https://domain.hu/demo-tobbszallashely/index.php ✓
+
+Az index.php pozíciója alapján automatikusan meghatározza a helyes útvonalat!
 ```
 
 ### Átirányítás

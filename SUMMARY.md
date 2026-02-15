@@ -8,7 +8,7 @@ A teljes Qvik/Revolut fizetési AJAX patch sikeresen elkészült, amely megfelel
 
 | Követelmény | Státusz | Implementáció |
 |-------------|---------|---------------|
-| AJAX mindig abszolút `/index.php` végpontra POST-ol | ✅ KÉSZ | `buildAjaxUrl()` függvény |
+| AJAX kérések a helyes index.php végpontra POST-olnak (almenü támogatással) | ✅ KÉSZ | `buildAjaxUrl()` függvény |
 | Átirányítás dinamikusan `guestform` → `confirmationform` | ✅ KÉSZ | `buildRedirectUrl()` függvény |
 | Testreszabható ID és class nevek | ✅ KÉSZ | CONFIG objektum |
 | Magyar kommentek minden kódsorban | ✅ KÉSZ | 100% magyar kommentálás |
@@ -122,16 +122,29 @@ function buildAjaxUrl() {
 
 ```javascript
 function buildAjaxUrl() {
-    const origin = window.location.origin;  // https://domain.hu
-    const endpoint = CONFIG.ajax.endpoint;  // /index.php
-    return origin + endpoint;               // https://domain.hu/index.php
+    const origin = window.location.origin;       // https://domain.hu
+    const pathname = window.location.pathname;   // /demo-tobbszallashely/index.php
+    
+    // Keressük meg az index.php pozícióját
+    const indexPhpPos = pathname.indexOf('index.php');
+    
+    let ajaxPath;
+    if (indexPhpPos !== -1) {
+        // Megőrizzük az almenü struktúrát
+        ajaxPath = pathname.substring(0, indexPhpPos) + 'index.php';
+    } else {
+        ajaxPath = CONFIG.ajax.endpoint;  // /index.php fallback
+    }
+    
+    return origin + ajaxPath;  // https://domain.hu/demo-tobbszallashely/index.php
 }
 ```
 
 **Előnyök:**
-- Függetlenül az aktuális útvonaltól mindig ugyanaz
-- Nem függ relatív útvonalaktól
-- Konzisztens a teljes alkalmazásban
+- Automatikusan detektálja és megőrzi az almenü struktúrát
+- Támogatja mind a gyökér (/index.php), mind az almenü (/path/index.php) útvonalakat
+- Elkerüli a 404 hibákat almenü esetén
+- Nem függ az aktuális oldal nevétől
 
 ### 2. Dinamikus Átirányítás
 

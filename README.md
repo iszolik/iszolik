@@ -41,15 +41,18 @@ Ez a JavaScript patch biztosítja, hogy a Qvik és Revolut fizetési rendszerek:
 ### 1. Abszolút AJAX Végpont ✅
 
 ```javascript
-// AJAX URL mindig: https://domain.hu/index.php
+// AJAX URL mindig megőrzi a teljes útvonalat, beleértve az almenü szegmenseket
 const ajaxUrl = buildAjaxUrl();
-// Eredmény: "https://yourdomain.com/index.php"
+
+// Gyökér menüből: "https://yourdomain.com/index.php"
+// Almenüből: "https://yourdomain.com/demo-tobbszallashely/index.php"
 ```
 
 **Előnyök:**
-- Nem függ az aktuális útvonaltól
-- Mindig a domain gyökérből indul
-- Elkerüli a relatív útvonal problémákat
+- Automatikusan detektálja és megőrzi az almenü struktúrát
+- Támogatja mind a gyökér, mind az almenü útvonalakat
+- Elkerüli a 404 hibákat almenü esetén
+- Nem függ az aktuális oldal nevétől, csak az index.php pozíciójától
 
 ### 2. Dinamikus Átirányítás 🔄
 
@@ -540,7 +543,39 @@ if (file_exists($patchPath)) {
 </script>
 ```
 
-### Probléma 2: AJAX Kérés Nem Indul
+### Probléma 2: AJAX Kérés 404 Hiba Almenüből
+
+**Tünet:** Gyökér menüből működik, de almenüből 404 hibát ad
+
+**Példa:**
+```
+✓ Működik: https://domain.hu/index.php?option=com_ajax&...
+✗ 404 hiba: https://domain.hu/demo-tobbszallashely/index.php?option=com_ajax&...
+```
+
+**Ok:** Az AJAX kérés rossz útvonalra megy (gyökér index.php helyett az almenü index.php-ra kellene)
+
+**Megoldás:**
+
+A patch v1.1+ automatikusan kezeli ezt! Ellenőrizze a konzol logokat:
+
+```javascript
+[Payment AJAX] Eredeti pathname: /demo-tobbszallashely/index.php
+[Payment AJAX] AJAX útvonal: /demo-tobbszallashely/index.php
+[Payment AJAX] Teljes URL: https://domain.hu/demo-tobbszallashely/index.php
+```
+
+Ha nem látja ezeket a logokat, vagy rossz útvonalat mutat, frissítse a patch-et a legújabb verzióra.
+
+**Ellenőrzés:**
+```javascript
+// Konzolban futtassa:
+window.PaymentAjaxHandler.buildAjaxUrl()
+// Gyökérből: https://domain.hu/index.php
+// Almenüből: https://domain.hu/demo-tobbszallashely/index.php
+```
+
+### Probléma 3: AJAX Kérés Nem Indul
 
 **Tünet:** Kattintás a gombra → normál form submit (oldal újratöltődik)
 
@@ -575,7 +610,7 @@ console.log('Form elem:', document.querySelector('#payment-form'));
 </script>
 ```
 
-### Probléma 3: Hibás Átirányítási URL
+### Probléma 4: Hibás Átirányítási URL
 
 **Tünet:** Az átirányítás nem a megfelelő oldalra megy
 
@@ -611,7 +646,7 @@ const CONFIG = {
 };
 ```
 
-### Probléma 4: Hibaüzenet Nem Jelenik Meg
+### Probléma 5: Hibaüzenet Nem Jelenik Meg
 
 **Tünet:** Hiba esetén nem látszik üzenet
 
@@ -637,7 +672,7 @@ if (!errorContainer) {
 }
 ```
 
-### Probléma 5: CORS vagy Hálózati Hiba
+### Probléma 6: CORS vagy Hálózati Hiba
 
 **Tünet:** `Network error` vagy `CORS policy` hiba a konzolban
 
@@ -737,24 +772,44 @@ console.log('AJAX URL:', window.PaymentAjaxHandler.buildAjaxUrl());
 ```javascript
 /**
  * Abszolút AJAX URL építése
- * @returns {string} https://domain.hu/index.php
+ * Megőrzi a teljes útvonalat beleértve az almenü szegmenseket
+ * @returns {string} https://domain.hu/[path/]index.php
  */
 function buildAjaxUrl() {
-    const origin = window.location.origin;  // https://domain.hu
-    const endpoint = CONFIG.ajax.endpoint;  // /index.php
-    return origin + endpoint;               // https://domain.hu/index.php
+    const origin = window.location.origin;       // https://domain.hu
+    const pathname = window.location.pathname;   // /demo-tobbszallashely/index.php
+    
+    // Keressük meg az index.php pozícióját
+    const indexPhpPos = pathname.indexOf('index.php');
+    
+    let ajaxPath;
+    if (indexPhpPos !== -1) {
+        // Megőrizzük az almenü struktúrát
+        ajaxPath = pathname.substring(0, indexPhpPos) + 'index.php';
+    } else {
+        // Fallback a konfigurált végpontra
+        ajaxPath = CONFIG.ajax.endpoint;  // /index.php
+    }
+    
+    return origin + ajaxPath;  // https://domain.hu/demo-tobbszallashely/index.php
 }
 ```
 
 **Példák:**
 ```javascript
-// Ha a jelenlegi oldal: https://example.com/booking/menu/guestform?id=123
+// Gyökér menüből: https://example.com/index.php?option=com_ajax&...
+// window.location.pathname = "/index.php"
 buildAjaxUrl()  // → https://example.com/index.php
 
-// Ha a jelenlegi oldal: https://example.com/subfolder/payment
-buildAjaxUrl()  // → https://example.com/index.php
+// Almenüből: https://example.com/demo-tobbszallashely/index.php?option=com_ajax&...
+// window.location.pathname = "/demo-tobbszallashely/index.php"
+buildAjaxUrl()  // → https://example.com/demo-tobbszallashely/index.php
 
-// Mindig ugyanaz az eredmény!
+// Többszintű almenüből: https://example.com/menu1/menu2/index.php?...
+// window.location.pathname = "/menu1/menu2/index.php"
+buildAjaxUrl()  // → https://example.com/menu1/menu2/index.php
+
+// Az index.php pozíciója alapján automatikusan meghatározza a helyes útvonalat!
 ```
 
 #### buildRedirectUrl()
