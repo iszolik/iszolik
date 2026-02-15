@@ -4,6 +4,8 @@
 
 Ez a főoldal segít navigálni a különböző dokumentumok között.
 
+**🆕 Legújabb verzió: v1.1.0** - Javítva a 404 hiba almenü struktúrákban!
+
 ---
 
 ## 🚀 Ha most kezdi...
@@ -28,7 +30,7 @@ Ez a főoldal segít navigálni a különböző dokumentumok között.
   - Telepítési útmutató
   - Testreszabási opciók
   - GYIK (10 kérdés)
-  - Hibaelhárítás (5 probléma)
+  - Hibaelhárítás (6 probléma) **← FRISSÍTVE: Submenu 404 hiba**
   - Technikai részletek
 
 ### 🔧 Telepítési Útmutatók
@@ -62,10 +64,24 @@ Ez a főoldal segít navigálni a különböző dokumentumok között.
   - Kód statisztikák
   - Best practices
 
+- **[VERIFICATION.md](VERIFICATION.md)** - **ÚJ!** Verifikációs útmutató
+  - Submenu 404 hiba javítás
+  - Teszt esetek és eredmények
+  - Konzol output ellenőrzés
+  - Éles környezet tesztelés
+
+### 🧪 Tesztelés
+- **[test-submenu-ajax.html](test-submenu-ajax.html)** - **ÚJ!** Interaktív teszt
+  - 5 teszt eset
+  - Gyökér és almenü URL tesztelés
+  - Valós idejű eredmények
+  - Debug információk
+
 ### 💻 Kód
 - **[payment-ajax-patch.js](payment-ajax-patch.js)** - A fő JavaScript fájl
-  - 518 sor kód
+  - 518+ sor kód **← FRISSÍTVE v1.1.0**
   - 100% magyar kommentálás
+  - Submenu támogatás
   - Használatra kész
 
 ---
