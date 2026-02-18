@@ -1,5 +1,16 @@
 # Solidres Payment Plugin 404 Fix - Complete Solution
 
+## ⚠️ Still Getting 404 After Applying Patch?
+
+**Use these troubleshooting tools:**
+- 🔧 **TROUBLESHOOTING_404.md** - Step-by-step diagnostic guide (Hungarian)
+- 🤖 **diagnostic.sh** - Automated checker: `bash diagnostic.sh`
+- 🌐 **verify-router.php** - Web verification: Upload & access in browser
+
+Most common issues: router in wrong location, cache not cleared, missing helper methods. See troubleshooting guide for complete checklist.
+
+---
+
 ## Problem Statement
 
 **Issue:** Qvik and Revolut payment method AJAX calls display correct endpoint URLs in browser developer tools but return **404 errors in submenu contexts**.
@@ -70,6 +81,9 @@ cp patches/router.php components/com_solidres/router.php
 ├── DEBUGGING_GUIDE.md                   # Step-by-step debugging
 ├── TESTING_GUIDE.md                     # Comprehensive testing framework
 ├── QUICK_REFERENCE.md                   # Quick reference card
+├── TROUBLESHOOTING_404.md               # 🆕 Troubleshooting when patch doesn't work
+├── diagnostic.sh                        # 🆕 Automated diagnostic script
+├── verify-router.php                    # 🆕 Web-based verification tool
 └── patches/
     ├── router.php                       # Enhanced component router
     ├── controller_reservationasset.php  # Enhanced controller methods
@@ -87,10 +101,19 @@ cp patches/router.php components/com_solidres/router.php
 | **DEBUGGING_GUIDE.md** | Step-by-step debugging procedures | English | 15 min |
 | **TESTING_GUIDE.md** | Comprehensive testing framework | English | 20 min |
 | **QUICK_REFERENCE.md** | Quick reference for common tasks | English | 5 min |
+| **TROUBLESHOOTING_404.md** | 🆕 Fix 404 errors after applying patch | Magyar | 20 min |
 | **OSSZEFOGLALO.md** | Complete summary in Hungarian | Magyar | 15 min |
+
+### Troubleshooting Tools
+
+| Tool | Purpose | Usage |
+|------|---------|-------|
+| **diagnostic.sh** | Automated system checker | `bash diagnostic.sh` |
+| **verify-router.php** | Web-based verification | Upload to Joomla root & access in browser |
 
 ### Quick Links
 
+- **Still getting 404?** → Start with **TROUBLESHOOTING_404.md** or run `bash diagnostic.sh`
 - **Quick fix?** → Start with `QUICK_REFERENCE.md`
 - **Want to understand why?** → Read `BACKEND_ROUTING_ANALYSIS.md`
 - **Ready to implement?** → Follow `IMPLEMENTATION_GUIDE.md`
