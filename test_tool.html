@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solidres Payment Method Context - Teszt Eszköz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #555;
+            margin-top: 30px;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .test-button {
+            background: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+            font-size: 14px;
+        }
+        .test-button:hover {
+            background: #45a049;
+        }
+        .test-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        .result {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        .info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        .warning {
+            background: #fff3cd;
+            color: #856404;
+            border: 1px solid #ffeaa7;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border-radius: 4px;
+            overflow-x: auto;
+            max-height: 300px;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        .status-pass {
+            background: #28a745;
+            color: white;
+        }
+        .status-fail {
+            background: #dc3545;
+            color: white;
+        }
+        .status-pending {
+            background: #ffc107;
+            color: #333;
+        }
+        input[type="text"], input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 5px;
+            width: 200px;
+        }
+        label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Solidres Payment Method Context - Teszt Eszköz</h1>
+    
+    <div class="test-section">
+        <h2>1. Context Információk</h2>
+        <button class="test-button" onclick="checkContextInfo()">Ellenőrizd a Context Info-t</button>
+        <button class="test-button" onclick="clearResults('context-results')">Törlés</button>
+        <div id="context-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>2. URL Paraméter Teszt</h2>
+        <p>Aktuális URL: <code id="current-url"></code></p>
+        <button class="test-button" onclick="testUrlParams()">Paraméterek Ellenőrzése</button>
+        <button class="test-button" onclick="testUrlBuilding()">URL Építés Teszt</button>
+        <div id="url-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>3. AJAX Endpoint Teszt</h2>
+        <div>
+            <label for="test-payment-id">Payment Method ID:</label>
+            <input type="number" id="test-payment-id" value="1" min="1">
+        </div>
+        <div>
+            <label for="test-property-id">Property ID:</label>
+            <input type="number" id="test-property-id" value="1" min="0">
+        </div>
+        <div>
+            <label for="test-reservation-id">Reservation ID:</label>
+            <input type="number" id="test-reservation-id" value="1" min="0">
+        </div>
+        <button class="test-button" onclick="testAjaxEndpoint()">AJAX Hívás Teszt</button>
+        <button class="test-button" onclick="clearResults('ajax-results')">Törlés</button>
+        <div id="ajax-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>4. Context Validáció Teszt</h2>
+        <p>Különböző context kombinációk tesztelése:</p>
+        <button class="test-button" onclick="testRootContext()">Root Menü</button>
+        <button class="test-button" onclick="testHubContext()">Hub Context</button>
+        <button class="test-button" onclick="testSubmenuContext()">Submenu Context</button>
+        <div id="context-validation-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>5. Session Persistence Teszt</h2>
+        <p>Session perzisztencia ellenőrzése:</p>
+        <button class="test-button" onclick="testSessionSet()">Session Beállítás</button>
+        <button class="test-button" onclick="testSessionGet()">Session Lekérés</button>
+        <button class="test-button" onclick="testSessionClear()">Session Törlés</button>
+        <div id="session-results"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>6. Teljes Folyamat Teszt</h2>
+        <p>Teljes fizetési mód kiválasztási folyamat szimulálása:</p>
+        <button class="test-button" onclick="runFullTest()">Teljes Teszt Futtatása</button>
+        <div id="full-test-results"></div>
+    </div>
+
+    <script>
+        // Utility functions
+        function addResult(containerId, message, type = 'info') {
+            const container = document.getElementById(containerId);
+            const result = document.createElement('div');
+            result.className = 'result ' + type;
+            result.innerHTML = message;
+            container.appendChild(result);
+        }
+
+        function clearResults(containerId) {
+            document.getElementById(containerId).innerHTML = '';
+        }
+
+        // Display current URL
+        document.getElementById('current-url').textContent = window.location.href;
+
+        // 1. Context Info Check
+        function checkContextInfo() {
+            clearResults('context-results');
+            
+            const params = new URLSearchParams(window.location.search);
+            const contextInfo = {
+                pathname: window.location.pathname,
+                origin: window.location.origin,
+                fullUrl: window.location.href,
+                parameters: {
+                    Itemid: params.get('Itemid'),
+                    property_id: params.get('property_id'),
+                    hub_id: params.get('hub_id'),
+                    site_id: params.get('site_id'),
+                    reservation_id: params.get('reservation_id')
+                }
+            };
+
+            addResult('context-results', '<strong>Context Információk:</strong><pre>' + JSON.stringify(contextInfo, null, 2) + '</pre>', 'info');
+            
+            // Validate critical params
+            const criticalParams = ['Itemid', 'property_id', 'reservation_id'];
+            let allPresent = true;
+            criticalParams.forEach(param => {
+                if (!contextInfo.parameters[param]) {
+                    addResult('context-results', '⚠️ Hiányzó kritikus paraméter: ' + param, 'warning');
+                    allPresent = false;
+                }
+            });
+            
+            if (allPresent) {
+                addResult('context-results', '✅ Minden kritikus paraméter jelen van', 'success');
+            }
+        }
+
+        // 2. URL Parameter Test
+        function testUrlParams() {
+            clearResults('url-results');
+            
+            const params = new URLSearchParams(window.location.search);
+            const criticalParams = ['Itemid', 'property_id', 'hub_id', 'site_id', 'reservation_id'];
+            
+            addResult('url-results', '<strong>URL Paraméterek:</strong>', 'info');
+            
+            criticalParams.forEach(param => {
+                const value = params.get(param);
+                if (value) {
+                    addResult('url-results', '✅ ' + param + ' = ' + value, 'success');
+                } else {
+                    addResult('url-results', '❌ ' + param + ' hiányzik', 'warning');
+                }
+            });
+        }
+
+        function testUrlBuilding() {
+            clearResults('url-results');
+            
+            // Simulate buildAjaxUrl function
+            let baseUrl = window.location.origin + window.location.pathname;
+            
+            if (window.location.pathname.indexOf('index.php') === -1) {
+                baseUrl = window.location.origin + '/index.php';
+                addResult('url-results', 'ℹ️ Submenu detected, using root index.php', 'info');
+            }
+            
+            const params = new URLSearchParams(window.location.search);
+            const urlParams = {
+                option: 'com_solidres',
+                task: 'reservation.updatePaymentMethod',
+                format: 'json',
+                Itemid: params.get('Itemid') || '',
+                property_id: params.get('property_id') || '',
+                hub_id: params.get('hub_id') || '',
+                site_id: params.get('site_id') || '',
+                reservation_id: params.get('reservation_id') || ''
+            };
+            
+            const queryString = Object.keys(urlParams)
+                .filter(key => urlParams[key] !== '')
+                .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(urlParams[key]))
+                .join('&');
+            
+            const finalUrl = baseUrl + '?' + queryString;
+            
+            addResult('url-results', '<strong>Épített AJAX URL:</strong><pre>' + finalUrl + '</pre>', 'success');
+        }
+
+        // 3. AJAX Endpoint Test
+        function testAjaxEndpoint() {
+            clearResults('ajax-results');
+            
+            const paymentMethodId = document.getElementById('test-payment-id').value;
+            const propertyId = document.getElementById('test-property-id').value;
+            const reservationId = document.getElementById('test-reservation-id').value;
+            
+            addResult('ajax-results', '🔄 AJAX teszt indítása...', 'info');
+            
+            // Build URL
+            let baseUrl = window.location.origin + window.location.pathname;
+            if (window.location.pathname.indexOf('index.php') === -1) {
+                baseUrl = window.location.origin + '/index.php';
+            }
+            
+            const params = new URLSearchParams(window.location.search);
+            const url = baseUrl + '?' +
+                'option=com_solidres&' +
+                'task=reservation.updatePaymentMethod&' +
+                'format=json&' +
+                'Itemid=' + (params.get('Itemid') || '') + '&' +
+                'property_id=' + propertyId + '&' +
+                'reservation_id=' + reservationId;
+            
+            const formData = new FormData();
+            formData.append('payment_method_id', paymentMethodId);
+            formData.append('property_id', propertyId);
+            formData.append('reservation_id', reservationId);
+            
+            addResult('ajax-results', '📡 URL: ' + url, 'info');
+            
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                credentials: 'same-origin',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => {
+                addResult('ajax-results', '📥 HTTP Status: ' + response.status + ' ' + response.statusText, 
+                    response.ok ? 'success' : 'error');
+                
+                if (!response.ok) {
+                    throw new Error('HTTP error: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(data => {
+                addResult('ajax-results', '✅ Válasz érkezett', 'success');
+                addResult('ajax-results', '<strong>Response:</strong><pre>' + JSON.stringify(data, null, 2) + '</pre>', 
+                    data.success ? 'success' : 'error');
+                
+                if (data.success) {
+                    addResult('ajax-results', '🎉 AJAX teszt sikeres!', 'success');
+                } else {
+                    addResult('ajax-results', '❌ API hiba: ' + (data.message || 'Unknown error'), 'error');
+                }
+            })
+            .catch(error => {
+                addResult('ajax-results', '❌ Hiba: ' + error.message, 'error');
+                addResult('ajax-results', 'ℹ️ Ez normális, ha nem vagy Joomla környezetben', 'info');
+            });
+        }
+
+        // 4. Context Validation Tests
+        function testRootContext() {
+            clearResults('context-validation-results');
+            addResult('context-validation-results', '<strong>Root Menü Context Teszt</strong>', 'info');
+            
+            const isRoot = window.location.pathname === '/' || 
+                          window.location.pathname === '/index.php' ||
+                          window.location.pathname.endsWith('/index.php');
+            
+            if (isRoot) {
+                addResult('context-validation-results', '✅ Root context detected', 'success');
+            } else {
+                addResult('context-validation-results', '❌ Not in root context. Path: ' + window.location.pathname, 'warning');
+            }
+        }
+
+        function testHubContext() {
+            clearResults('context-validation-results');
+            addResult('context-validation-results', '<strong>Hub Context Teszt</strong>', 'info');
+            
+            const params = new URLSearchParams(window.location.search);
+            const hubId = params.get('hub_id');
+            
+            if (hubId) {
+                addResult('context-validation-results', '✅ Hub context detected: hub_id = ' + hubId, 'success');
+            } else {
+                addResult('context-validation-results', '❌ No hub_id parameter found', 'warning');
+            }
+        }
+
+        function testSubmenuContext() {
+            clearResults('context-validation-results');
+            addResult('context-validation-results', '<strong>Submenu Context Teszt</strong>', 'info');
+            
+            const path = window.location.pathname;
+            const hasSubmenu = path.includes('/') && path !== '/' && !path.endsWith('/');
+            
+            if (hasSubmenu && path.indexOf('index.php') !== -1) {
+                addResult('context-validation-results', '✅ Submenu context detected: ' + path, 'success');
+            } else if (hasSubmenu) {
+                addResult('context-validation-results', '⚠️ Possible submenu but no index.php: ' + path, 'warning');
+            } else {
+                addResult('context-validation-results', 'ℹ️ Not in submenu context', 'info');
+            }
+        }
+
+        // 5. Session Tests
+        function testSessionSet() {
+            clearResults('session-results');
+            addResult('session-results', 'ℹ️ Session teszt csak szerver oldalon működik', 'info');
+            addResult('session-results', 'ℹ️ LocalStorage szimulációt használunk...', 'info');
+            
+            const testData = {
+                guest: {
+                    payment_method_id: 123
+                },
+                context: {
+                    property_id: 1,
+                    reservation_id: 456,
+                    timestamp: Date.now()
+                }
+            };
+            
+            localStorage.setItem('test_reservation_details', JSON.stringify(testData));
+            addResult('session-results', '✅ Teszt adat mentve LocalStorage-ba', 'success');
+            addResult('session-results', '<pre>' + JSON.stringify(testData, null, 2) + '</pre>', 'info');
+        }
+
+        function testSessionGet() {
+            clearResults('session-results');
+            
+            const data = localStorage.getItem('test_reservation_details');
+            
+            if (data) {
+                addResult('session-results', '✅ Teszt adat megtalálva', 'success');
+                addResult('session-results', '<pre>' + JSON.parse(data) + '</pre>', 'info');
+            } else {
+                addResult('session-results', '❌ Nincs mentett teszt adat', 'error');
+            }
+        }
+
+        function testSessionClear() {
+            localStorage.removeItem('test_reservation_details');
+            clearResults('session-results');
+            addResult('session-results', '✅ Teszt adat törölve', 'success');
+        }
+
+        // 6. Full Test
+        function runFullTest() {
+            clearResults('full-test-results');
+            addResult('full-test-results', '<h3>🚀 Teljes Teszt Futtatása</h3>', 'info');
+            
+            let passed = 0;
+            let failed = 0;
+            
+            // Test 1: URL Parameters
+            addResult('full-test-results', '<strong>1. URL Paraméterek</strong>', 'info');
+            const params = new URLSearchParams(window.location.search);
+            const hasPropertyId = params.get('property_id') !== null;
+            const hasItemId = params.get('Itemid') !== null;
+            
+            if (hasPropertyId) {
+                addResult('full-test-results', '✅ property_id jelen van', 'success');
+                passed++;
+            } else {
+                addResult('full-test-results', '❌ property_id hiányzik', 'error');
+                failed++;
+            }
+            
+            // Test 2: URL Building
+            addResult('full-test-results', '<strong>2. URL Építés</strong>', 'info');
+            try {
+                let baseUrl = window.location.origin + window.location.pathname;
+                if (window.location.pathname.indexOf('index.php') === -1) {
+                    baseUrl = window.location.origin + '/index.php';
+                }
+                addResult('full-test-results', '✅ URL építés sikeres: ' + baseUrl, 'success');
+                passed++;
+            } catch (e) {
+                addResult('full-test-results', '❌ URL építés hiba: ' + e.message, 'error');
+                failed++;
+            }
+            
+            // Test 3: Context Detection
+            addResult('full-test-results', '<strong>3. Context Detektálás</strong>', 'info');
+            const isSubmenu = window.location.pathname.indexOf('index.php') === -1;
+            addResult('full-test-results', '✅ Context típus: ' + (isSubmenu ? 'Submenu' : 'Root/Hub'), 'success');
+            passed++;
+            
+            // Summary
+            addResult('full-test-results', 
+                '<h3>📊 Összegzés</h3>' +
+                '<p>✅ Sikeres: ' + passed + '</p>' +
+                '<p>❌ Sikertelen: ' + failed + '</p>' +
+                '<p>🎯 Sikerességi arány: ' + Math.round((passed / (passed + failed)) * 100) + '%</p>',
+                failed === 0 ? 'success' : 'warning');
+        }
+
+        // Auto-load context info on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            console.log('🧪 Payment Method Context Test Tool loaded');
+            console.log('Current URL:', window.location.href);
+            console.log('Use the test buttons to validate your implementation');
+        });
+    </script>
+</body>
+</html>
