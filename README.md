@@ -39,6 +39,20 @@ This repository documents the GitHub Copilot Agent system operation and contains
    - Időbecslések / Time estimates
    - Pro tippek / Pro tips
 
+4. **[VISUAL_DIAGRAMS.md](VISUAL_DIAGRAMS.md)** (14KB)
+   - Vizuális workflow ábrák / Visual workflow diagrams
+   - Döntési fa / Decision tree
+   - Folyamat diagramok / Process diagrams
+   - Időskála összehasonlítás / Timeline comparison
+
+### 📝 Technical / Technikai:
+
+5. **[IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md)** (11KB)
+   - Implementation details
+   - Problem statement resolution
+   - Documentation statistics
+   - Quality metrics
+
 ---
 
 ## 🚀 Gyors kezdés / Quick Start
@@ -232,6 +246,12 @@ Ha kérdésed van / If you have questions:
 ### Gyors referencia / Quick Reference:
 - [QUICK_REFERENCE.md](QUICK_REFERENCE.md)
 
+### Vizuális segédletek / Visual Aids:
+- [VISUAL_DIAGRAMS.md](VISUAL_DIAGRAMS.md) - Workflow diagrams, decision trees
+
+### Technikai részletek / Technical Details:
+- [IMPLEMENTATION_SUMMARY.md](IMPLEMENTATION_SUMMARY.md) - Implementation details
+
 ---
 
 ## 🏗️ Repository struktúra / Repository Structure
@@ -242,6 +262,8 @@ iszolik/iszolik/
 ├── WORKFLOW_MAGYARAZAT_HU.md     (teljes magyar útmutató / full HU guide)
 ├── WORKFLOW_EXPLAINED_EN.md       (teljes angol útmutató / full EN guide)
 ├── QUICK_REFERENCE.md             (gyors parancs lista / quick commands)
+├── VISUAL_DIAGRAMS.md             (vizuális diagramok / visual diagrams)
+├── IMPLEMENTATION_SUMMARY.md      (technikai összefoglaló / tech summary)
 └── reservation.php                (példa fájl / example file)
 ```
 
